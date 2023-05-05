@@ -1,17 +1,36 @@
 import { Injectable } from '@nestjs/common';
-import { CompanyInterface } from './company.dto';
+import { CompanyDTO } from './company.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Company } from '../schemas/company.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class CompanyService {
-  private readonly company: CompanyInterface[] = [];
+  constructor(
+    @InjectModel(Company.name) private CompanyModel: Model<Company>,
+  ) {}
+
+  //   private readonly company: CompanyInterface[] = [];
 
   //   get all companies data
-  getAllCompanyData() {
-    // replace samplecompanydata with company
-    return this.company;
+  async getAllCompanyData() {
+    return this.CompanyModel.find();
   }
 
-  addNewCompany(company: CompanyInterface) {
-    return this.company.push(company);
+  // get a company based on its name
+  getCompanyBasedOnName(name: string) {
+    return this.CompanyModel.find((company) => this.CompanyModel.name === name);
   }
+
+  //   create a new company using Post Request
+  addNewCompany(company: CompanyDTO) {
+    return this.CompanyModel.create(company);
+  }
+
+  //   update a company using Patch Request
+  //   updateCompany(company): CompanyDTO {
+  //     return this.company.push(company);
+  //   }
+
+  //   delete a company using Delete Request
 }

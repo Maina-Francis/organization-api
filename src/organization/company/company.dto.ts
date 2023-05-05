@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export interface CompanyInterface {
+  id: number;
   name: string;
   address: string;
   email: string;
@@ -9,6 +10,9 @@ export interface CompanyInterface {
 
 export class CompanyDTO {
   // add validation to our company dto
+  @IsNotEmpty()
+  @IsNumber()
+  id: number;
 
   @IsNotEmpty()
   @IsString()
